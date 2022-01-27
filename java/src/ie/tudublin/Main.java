@@ -17,6 +17,15 @@ public class Main
 
         // Tara Misty
         // Tara Tara
+
+        //create new cat
+        Cat ginger = new Cat("Ginger");
+        //set lives
+        int remaining = ginger.setNumLives();
+        //kill the cat
+        while(remaining != -1){  
+            remaining = ginger.Kill();
+        } 
         
     }
 }
