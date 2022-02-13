@@ -20,6 +20,12 @@ public class Main
         processing.core.PApplet.runSketch( a, new Loops());
     }
 
+    public static void tutorial()
+    {
+		String[] a = {"MAIN"};
+        processing.core.PApplet.runSketch( a, new Tutorial());
+    }
+
     public void cat()
     {
         System.out.println("Hello world");
