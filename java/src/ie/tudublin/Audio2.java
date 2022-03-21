@@ -4,14 +4,16 @@ import ddf.minim.AudioBuffer;
 import ddf.minim.AudioInput;
 import ddf.minim.AudioPlayer;
 import ddf.minim.Minim;
+import ddf.minim.analysis.FFT;
 import processing.core.PApplet;
 
 public class Audio2 extends PApplet
 {
     Minim minim;
-    AudioPlayer ap;
-    AudioInput ai;
-    AudioBuffer ab;
+    AudioPlayer ap;//controls the audio
+    AudioInput ai;//takes audio from microphone
+    AudioBuffer ab;//frame of audio --> big array of audio samples
+    //sample rate --> measuring the amplitude of the analogue signal
 
     int mode = 0;
 
@@ -19,6 +21,8 @@ public class Audio2 extends PApplet
     float y = 0;
     float smoothedY = 0;
     float smoothedAmplitude = 0;
+    
+    FFT fft;
 
     public void keyPressed() {
 		if (key >= '0' && key <= '9') {
@@ -44,12 +48,14 @@ public class Audio2 extends PApplet
     {
         minim = new Minim(this);
         // Uncomment this to use the microphone
-        // ai = minim.getLineIn(Minim.MONO, width, 44100, 16);
-        // ab = ai.mix; 
-        ap = minim.loadFile("heroplanet.mp3", 1024);
-        ap.play();
-        ab = ap.mix;
+        ai = minim.getLineIn(Minim.MONO, width, 44100, 16);
+        ab = ai.mix; 
+        // ap = minim.loadFile("heroplanet.mp3", 1024);
+        //ap.play();
+        //ab = ap.mix;
         colorMode(HSB);
+
+        fft = new FFT(1024, 44100);
 
         y = height / 2;
         smoothedY = y;
@@ -61,6 +67,44 @@ public class Audio2 extends PApplet
 
     public void draw()
     {
+
+        background(0);
+        stroke(255);
+        float halfH = height / 2;
+        for(int i = 0;i < ab.size();i++)
+        {
+            line(i, halfH, i, halfH + ab.get(i) * halfH);
+        }
+
+        fft.window(FFT.HAMMING);
+        fft.forward(ab);
+        colorMode(RGB);
+
+        stroke(0,255,0);
+
+        for(int i = 0;i < fft.specSize(); i++)
+        {
+            line(i,0,i,fft.getBand(i) * 10);
+        }
+
+        int maxIndex = 0;
+
+        for(int i = 0;i < fft.specSize(); i++)
+        {
+            if(fft.getBand(i) > fft.getBand(maxIndex))
+            {
+                maxIndex = i;
+            }
+        }
+
+        float freq = fft.indexToFreq(maxIndex);
+
+        textSize(20);
+        fill(255);
+        text("Freq: " + freq,100,200);
+
+
+        /* OLD CODE
         //background(0);
         float halfH = height / 2;
         float average = 0;
@@ -154,9 +198,6 @@ public class Audio2 extends PApplet
 
         }
         
-
-
-        
         // Other examples we made in the class
         /*
         stroke(255);
@@ -168,7 +209,7 @@ public class Audio2 extends PApplet
         y += random(-10, 10);
         smoothedY = lerp(smoothedY, y, 0.1f);        
         circle(200, smoothedY, 50);
-        */
+        */      
 
     }        
 }
