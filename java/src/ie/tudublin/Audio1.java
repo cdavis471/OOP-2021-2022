@@ -8,6 +8,7 @@ import processing.core.PApplet;
 
 public class Audio1 extends PApplet
 {
+
     Minim minim;
     AudioPlayer ap;
     AudioInput ai;
