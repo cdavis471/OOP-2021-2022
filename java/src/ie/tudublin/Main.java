@@ -78,8 +78,8 @@ public class Main
     }
     public static void main(String[] args)
     {
-        audio2();
-
+        //audio2();
+        colorfulLife();
         // Tara Misty
         // Tara Tara
         
