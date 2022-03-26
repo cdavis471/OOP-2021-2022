@@ -20,6 +20,7 @@ public class Audio2 extends PApplet
     AudioPlayer ap;
     AudioInput ai;
     AudioBuffer ab;
+    PitchSpeller ps = new PitchSpeller();
 
     int mode = 0;
 
@@ -101,13 +102,12 @@ public class Audio2 extends PApplet
             }
         }
 
-        // Fill out missing code!!
 
         float freq = fft.indexToFreq(maxIndex);
-
         textSize(20);
         fill(255);
-        text("Freq: " + freq, 100, 200);
+        //ps.spell(freq) --> to display the correct spelling for the frequency
+        text("Freq: " + ps.spell(freq), 100, 200);
 
     }        
 }

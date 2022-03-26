@@ -1,69 +1,35 @@
 package ie.tudublin;
 
-import ddf.minim.AudioBuffer;
-import ddf.minim.AudioInput;
-import ddf.minim.AudioPlayer;
-import ddf.minim.Minim;
-import ddf.minim.analysis.FFT;
 import processing.core.PApplet;
 import java.lang.Math;
 
-public class PitchSpeller extends PApplet 
+public class PitchSpeller extends PApplet
 {
-
-    /*
-    //variables
-    Minim minim;
-    AudioPlayer ap;
-    AudioInput ai;
-    AudioBuffer ab;
-
-    float[] lerpedBuffer;
-    float y = 0;
-    float smoothedY = 0;
-    float smoothedAmplitude = 0;
-    */
-
-    //given freq and spellings
-    float[] frequencies = {261.63f,293.66f,329.63f,391.99f,440.00f,493.88f,1174.66f};
-    String[] spellings = {"C,", "D,", "E,", "G,", "A,", "B,","b"};
-
-    /*
-    public void settings()
-    {
-        //size(1024, 1000, P3D);
-        fullScreen(P3D, SPAN);
-    }
-
-    public void setup()
-    {
-        
-    }
-
-    public void draw()
-    {
-        
-
-    }
-    */
-    
-    public String spell(float frequency)
-    {
-
-        //variables for checking
-        String correctNote = "";
-        int index = 0;
-        float result = 0;
-        float currFreq = frequencies[0];
-        //for loop to check for closer frequency
-        for(int i = 0;i < frequencies.length;i++)
-        {
-            if(i == frequencies.length - 1)
+    //given frequencies and spellings
+    float[] frequencies = {293.66f, 329.63f, 369.99f, 392.00f, 440.00f, 493.88f, 554.37f, 587.33f, 659.25f, 739.99f, 783.99f, 880.00f, 987.77f, 1108.73f, 1174.66f};
+    String[] spellings = {"D,", "E,", "F,", "G,", "A,", "B,", "C", "D", "E", "F", "G", "A", "B","c", "d", "e", "f", "g", "a", "b", "c'", "d'", "e'", "f'", "g'", "a'", "b'", "c''", "d''"};
+    //record index of closest frequency spelling
+    int closest = 0;
+    //find the closest frequency
+    public String spell(float givenFrequency)
+    {   
+        //set the initial range for comparison
+        float range = Math.abs(frequencies[0] - givenFrequency);
+        //iterate through frequencies
+        for(int i = 0; i < frequencies.length; i++)
+        {   
+            //find the closest frequency to the given one
+            float findClosest = Math.abs(frequencies[i] - givenFrequency);
+            if(findClosest < range)
             {
-                correctNote = spellings[index];
+                //record index of closest frequency
+                closest = i;
+                //set the new shortest range for comparison with the next frequency
+                range = findClosest;
             }//end if statement
         }//end for loop
-        return correctNote;
+        //return the closest spelling
+        return spellings[closest];
     }//end spell method
-    
+
 }//end PitchSpeller class
