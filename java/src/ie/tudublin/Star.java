@@ -13,8 +13,6 @@ public class Star
     private float zG;
     private float absMag;
 
-    
-
     @Override
     public String toString() {
         return "Star [absMag=" + absMag + ", displayName=" + displayName + ", distance=" + distance + ", hab=" + hab
@@ -42,6 +40,8 @@ public class Star
         this.yG = yG;
         this.zG = zG;
         this.absMag = absMag;
+        
+
     }
 
     public boolean isHab() {
